@@ -17,9 +17,12 @@ HTTP_PARAMS   = {
 
 # MAIN
 def handler():
+    # 1. Initialise a table
     table = []
-    table_header = ('FILENAME', 'TEXT')
+    table_header = ('filename', 'text')
     table.append(table_header)
+
+    # 2. Process each image
     for filename in sorted(os.listdir(DIR)):
         if filename.endswith("win (01).png"): 
             print('Processing: ' + filename)
@@ -30,9 +33,10 @@ def handler():
             row = (filename, parsed)
             table.append(row)
     
+    # 3. Export results to CSV
     export('output', table)
 
-# POST image for processing by Cognitive Services
+# HTTP POST image for processing by Cognitive Services
 def process_img(pathToImage):
     payload = open(pathToImage, 'rb').read()
     response = requests.post(ENDPOINT, headers=HTTP_HEADERS, params=HTTP_PARAMS, data=payload)
